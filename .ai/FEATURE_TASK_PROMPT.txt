@@ -1,0 +1,16 @@
+Task:
+
+[在这里写你的需求，比如：]
+Add support for user-uploaded PPT templates in the rendering stage.
+
+Requirements:
+
+- Must follow docs rules
+- Must integrate into existing pipeline
+- Must NOT modify core flow
+- Must be optional (not affecting main user flow)
+
+Important:
+
+- Keep MVP scope
+- Prefer fallback to default behavior if failed

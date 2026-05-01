@@ -1,0 +1,15 @@
+Review the implementation and check for violations.
+
+Checklist:
+
+1. Does it modify pipeline structure?
+2. Does it bypass core/pipeline.py?
+3. Does it introduce new user flows?
+4. Does it increase complexity?
+5. Does it break "single input → single output"?
+
+Return:
+
+- Violations (if any)
+- Risk level (low / medium / high)
+- Suggested fix

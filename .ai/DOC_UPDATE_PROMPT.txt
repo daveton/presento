@@ -1,0 +1,14 @@
+Update documentation based on the implementation.
+
+You must:
+
+1. Update:
+   - docs/08_CHANGELOG.md
+
+2. Include:
+   - What was added
+   - Why it was added
+   - Whether it affects pipeline
+
+3. Ensure:
+   - No contradiction with PRODUCT or ARCHITECTURE docs
