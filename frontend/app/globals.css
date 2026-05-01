@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* 品牌色 */
+  --st-primary: #4D77FF;
+  --st-primary-press: #3D66FF;
+  --st-primary-soft: #E0E7FF;
+  --st-primary-highlight: #6B8FFF;
+  
+  /* 背景 */
+  --st-bg: #F5F7FF;
+  --st-bg-soft: #EEF2FF;
+  --st-surface: #FFFFFF;
+  --st-surface-accent: #F0F4FF;
+  
+  /* 边框 */
+  --st-border: #E2E8F0;
+  
+  /* 文本 */
+  --st-text: #1E293B;
+  --st-text-sub: #475569;
+  --st-text-muted: #94A3B8;
+  --st-placeholder: #CBD5E1;
+  --st-white: #FFFFFF;
+  
+  /* 状态 */
+  --st-success: #3DA86E;
+  --st-success-soft: #E7F6EE;
+  --st-warning: #D98A20;
+  --st-warning-soft: #FFF2D8;
+  --st-risk: #E5484D;
+  --st-risk-soft: #FDECEC;
+  
+  /* 金色 */
+  --st-gold: #FF9800;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: var(--st-bg);
+  color: var(--st-text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--st-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--st-text-muted);
+}
+
+/* 选中文本样式 */
+::selection {
+  background: var(--st-primary-soft);
+  color: var(--st-primary);
+}
