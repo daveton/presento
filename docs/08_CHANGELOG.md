@@ -119,6 +119,28 @@
 
 ---
 
+## 2026-05-02 (4)
+
+### Added
+- 创建 tests/ 目录，添加规则引擎测试套件
+- test_rules.py - 独立测试（不依赖外部库）
+- test_cases.py - 5个真实测试用例数据
+- 测试覆盖：规则引擎、质量评分、内容重写
+
+### Test Results
+- ✅ Rule Enforcement: 通过
+- ✅ Quality Scoring: 通过（高分100，低分55）
+- ✅ Content Rewrite: 通过（替换/截断/清理）
+
+### Impact
+- 确保核心规则引擎稳定工作
+- 可验证自动分页、长度限制、质量评分
+
+### Docs Updated
+- [x] 08_CHANGELOG.md
+
+---
+
 ## 模板（复制使用）
 
 ```
