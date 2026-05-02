@@ -50,6 +50,30 @@
 
 ---
 
+## 2026-05-02
+
+### Added
+- 创建 AI Prompt 约束体系（.ai/ 目录）
+- DEV_SYSTEM_PROMPT.txt - 系统级开发约束
+- FEATURE_TASK_PROMPT.txt - 任务描述模板
+- GUARD_PROMPT.txt - 代码违规检查
+- DOC_UPDATE_PROMPT.txt - 文档维护规范
+
+### Reason
+- 建立 AI 开发规范，防止架构失控
+- 确保每次 AI 生成代码都遵守项目规则
+- 实现文档约束 → AI 执行的自动化
+
+### Impact
+- 不影响核心流程（纯工具/规范层）
+- 提升开发可控性
+- 要求每次开发必须先加载 DEV_SYSTEM_PROMPT
+
+### Docs Updated
+- [x] 08_CHANGELOG.md
+
+---
+
 ## 模板（复制使用）
 
 ```
