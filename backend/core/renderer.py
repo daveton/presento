@@ -6,20 +6,155 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 import os
 import uuid
 
+# ==============================
+# 配置
+# ==============================
+
+OUTPUT_DIR = "/tmp/presento"
+MAX_TITLE_LEN = 22
+MAX_POINTS = 5
+MAX_POINT_LEN = 20
+
+FONT_SIZES = {
+    3: 28,
+    5: 24,
+    8: 20
+}
+
 # 品牌色
 PRIMARY_COLOR = RgbColor(0x4D, 0x77, 0xFF)  # #4D77FF
 TEXT_COLOR = RgbColor(0x1E, 0x29, 0x3B)     # #1E293B
 SUBTEXT_COLOR = RgbColor(0x47, 0x55, 0x69)  # #475569
 
+# ==============================
+# 工具函数
+# ==============================
+
+def trim_text(text, max_len):
+    return text[:max_len]
+
+def clean_text(text):
+    return text.replace("，", "").replace("。", "")
+
+def split_points(points):
+    """自动分页"""
+    result = []
+    for i in range(0, len(points), MAX_POINTS):
+        result.append(points[i:i + MAX_POINTS])
+    return result
+
+def get_font_size(n):
+    if n <= 3:
+        return FONT_SIZES[3]
+    elif n <= 5:
+        return FONT_SIZES[5]
+    else:
+        return FONT_SIZES[8]
+
+def rewrite_point(text):
+    """
+    简单内容优化
+    """
+    text = clean_text(text)
+
+    # 强制短句
+    if len(text) > MAX_POINT_LEN:
+        text = text[:MAX_POINT_LEN]
+
+    # 强化节奏（简单规则）
+    if "因为" in text:
+        text = text.replace("因为", "原因：")
+
+    return text
+
+
+# ==============================
+# 核心规则引擎
+# ==============================
+
+def enforce_rules(slides):
+    """强制规则引擎 - 确保所有输出符合规范"""
+    new_slides = []
+
+    for slide in slides:
+        slide_type = slide.get("type", "content")
+
+        # 封面
+        if slide_type == "cover":
+            new_slides.append({
+                "type": "cover",
+                "title": trim_text(slide.get("title", ""), MAX_TITLE_LEN),
+                "subtitle": trim_text(slide.get("subtitle", ""), 40)
+            })
+            continue
+
+        # 内容页
+        title = trim_text(slide.get("title", ""), MAX_TITLE_LEN)
+        points = slide.get("points", [])
+
+        # 重写 + 裁剪
+        points = [rewrite_point(p) for p in points]
+        points = [p[:MAX_POINT_LEN] for p in points]
+
+        # 自动分页
+        split = split_points(points)
+
+        for part in split:
+            new_slides.append({
+                "type": "content",
+                "title": title,
+                "points": part
+            })
+
+    return new_slides[:10]  # 限制总页数
+
+
+# ==============================
+# 质量评分
+# ==============================
+
+def score_slides(slides):
+    """评分系统 - 满分100，合格线60"""
+    score = 100
+
+    for slide in slides:
+        if slide["type"] == "content":
+            pts = slide.get("points", [])
+
+            if len(pts) < 2:
+                score -= 20
+
+            for p in pts:
+                if len(p) > MAX_POINT_LEN:
+                    score -= 5
+
+    return score
+
+
+# ==============================
+# 主函数
+# ==============================
+
 async def create_ppt_file(content: Dict[str, Any]) -> str:
     """
     创建 PPT 文件并返回下载链接
+    完整流程：规则引擎 -> 质量评分 -> 渲染
     """
+    slides_data = content.get("slides", [])
+    
+    # 1️⃣ 规则引擎
+    slides_data = enforce_rules(slides_data)
+    
+    # 2️⃣ 质量评分
+    quality_score = score_slides(slides_data)
+    if quality_score < 60:
+        print(f"Warning: Quality score {quality_score} is below threshold")
+        # 继续渲染，但记录警告
+    
+    # 3️⃣ 创建PPT
     prs = Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
-    
-    slides_data = content.get("slides", [])
     
     for slide_data in slides_data:
         slide_type = slide_data.get("type", "content")
@@ -30,16 +165,14 @@ async def create_ppt_file(content: Dict[str, Any]) -> str:
             _create_content_slide(prs, slide_data)
     
     # 确保输出目录存在
-    output_dir = "/tmp/presento"
-    os.makedirs(output_dir, exist_ok=True)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     
     # 生成唯一文件名
     filename = f"{uuid.uuid4().hex}.pptx"
-    filepath = os.path.join(output_dir, filename)
+    filepath = os.path.join(OUTPUT_DIR, filename)
     
     prs.save(filepath)
     
-    # 返回相对路径，实际部署时转换为完整 URL
     return f"/download/{filename}"
 
 

@@ -74,6 +74,31 @@
 
 ---
 
+## 2026-05-02 (2)
+
+### Changed
+- 重构 `core/renderer.py`，集成完整规则引擎
+- 添加 `enforce_rules()` - 强制标题/要点/页数限制
+- 添加 `score_slides()` - 质量评分系统（满分100，合格线60）
+- 添加 `rewrite_point()` - 内容优化（短句化、节奏调整）
+- 添加 `split_points()` - 自动分页（每页最多5要点）
+- 整合用户提供的 `ppt_engine.py` 核心能力
+
+### Reason
+- 提升 PPT 输出质量到产品级别
+- 确保所有输出符合规则约束（22字/20字/≤10页）
+- 实现自动分页，避免单页内容过多
+
+### Impact
+- 增强 Pipeline 的 render 步骤
+- 不破坏现有架构（保持在 core/ 层）
+- 下游调用方式不变（`create_ppt_file()` 接口保持一致）
+
+### Docs Updated
+- [x] 08_CHANGELOG.md
+
+---
+
 ## 模板（复制使用）
 
 ```
