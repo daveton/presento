@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function Home() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleGenerate = async () => {
     if (!input) {
@@ -23,16 +25,24 @@ export default function Home() {
         body: JSON.stringify({ input })
       })
 
+      if (!res.ok) {
+        const error = await res.json()
+        alert(error.detail || "Generation failed")
+        setLoading(false)
+        return
+      }
+
       const data = await res.json()
 
-      // 跳转到结果页
-      console.log(data)
+      // 存储结果并跳转
+      sessionStorage.setItem("pptResult", JSON.stringify(data))
+      router.push("/result")
 
     } catch (err) {
       console.error(err)
+      alert("Network error, please try again")
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (
