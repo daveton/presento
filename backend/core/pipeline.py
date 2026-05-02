@@ -67,9 +67,16 @@ def run_pipeline(input_text: str, template: str = "business") -> Dict[str, Any]:
     # enforce_rules 已在文件顶部导入，这里仅引用以明确执行顺序
     _ = enforce_rules
 
-    # Step 9: 渲染PPT
-    download_url = create_ppt_file(content)
-    print(f"[Pipeline] Rendered: {download_url}")
+    # Step 9: 渲染PPT（根据template选择渲染器）
+    if template and template != "default":
+        # 使用模板渲染
+        from .template_renderer import create_ppt_with_template
+        download_url = create_ppt_with_template(content, template)
+    else:
+        # 使用默认渲染
+        download_url = create_ppt_file(content)
+
+    print(f"[Pipeline] Rendered with template '{template}': {download_url}")
 
     return {
         "intent": intent,

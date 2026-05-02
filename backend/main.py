@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.generate import router as generate_router
+from api.templates import router as templates_router
 
 app = FastAPI(title="Presento API", version="0.1.0")
 
@@ -15,6 +16,7 @@ app.add_middleware(
 
 # Routers
 app.include_router(generate_router, prefix="/api")
+app.include_router(templates_router, prefix="/api")
 
 @app.get("/health")
 async def health_check():
