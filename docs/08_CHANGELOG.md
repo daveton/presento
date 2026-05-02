@@ -99,6 +99,26 @@
 
 ---
 
+## 2026-05-02 (3)
+
+### Changed
+- 重命名 DESIGN.md → docs/04_DESIGN.md
+- 重命名 EXECUTION_SPEC.md → docs/05_EXECUTION_SPEC.md
+- 根目录仅保留 README.md
+
+### Reason
+- 统一文档结构，所有文档集中在 docs/ 目录
+- 建立清晰的文档编号体系
+
+### Impact
+- 不影响代码功能
+- 文档访问路径变更
+
+### Docs Updated
+- [x] 08_CHANGELOG.md
+
+---
+
 ## 模板（复制使用）
 
 ```
