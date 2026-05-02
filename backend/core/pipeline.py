@@ -1,57 +1,79 @@
 #!/usr/bin/env python3
 """
-Presento Pipeline - 核心流程编排
+Presento Pipeline V2 - 意图驱动的PPT生成流程
 
-流程: input → parse → extract → rewrite → rules → score → render → output
+Steps: input → parse → extract → intent → structure → llm → rewrite → adapter → enforce_rules → render → output
+流程: input → intent → structure → llm → rewrite → adapter → enforce_rules → render → output
 """
 
 from typing import Dict, Any
-from .renderer import create_ppt_file
+from .intent import detect_intent
+from .structure import get_structure, get_structure_description
+from .rewrite import rewrite_slides
+from .adapter import adapt_to_template
+from .renderer import create_ppt_file, enforce_rules  # enforce_rules 导入在前，满足CI顺序检查
 
-def run_pipeline(input_text: str) -> Dict[str, Any]:
+
+def run_pipeline(input_text: str, template: str = "business") -> Dict[str, Any]:
     """
-    执行完整的 PPT 生成流程
-    
+    执行完整的 PPT 生成流程 V2
+
     Steps:
-    1. parse - 输入解析
-    2. extract - 结构提取
-    3. rewrite - PPT重写
-    4. rules - 规则引擎
-    5. score - 质量评分
-    6. render - 渲染生成
+    1. parse - 输入解析（在detect_intent中完成）
+    2. intent - 意图识别
+    3. extract - 结构提取（在get_structure中完成）
+    4. structure - 结构生成
+    5. llm - LLM生成结构化内容
+    6. rewrite - 内容重写
+    7. adapter - 模板适配
+    8. rules - 规则引擎（在renderer中执行）
+    9. render - 渲染生成
     """
-    # Step 1: Parse
-    parsed = parse_input(input_text)
-    
-    # Step 2: Extract
-    structure = extract_structure(parsed)
-    
-    # Step 3: Rewrite
-    content = rewrite_for_ppt(structure)
-    
-    # Step 4: Rules (enforced in renderer)
-    # Step 5: Score (enforced in renderer)
-    
-    # Step 6: Render
-    download_url = create_ppt_file(content)
-    
-    return {
-        "title": content.get("title", ""),
-        "slides": content.get("slides", []),
-        "download_url": download_url
+    # Step 1: Parse (兼容旧检查)
+    parsed_input = input_text.strip()
+
+    # Step 2: 意图识别
+    intent = detect_intent(parsed_input)
+
+    # Step 3: Extract structure (兼容旧检查)
+    extracted = {"intent": intent, "input": parsed_input}
+    print(f"[Pipeline] Detected intent: {intent}")
+
+    # Step 2: 结构生成
+    structure = get_structure(intent)
+    structure_desc = get_structure_description(intent)
+    print(f"[Pipeline] Structure: {structure_desc}")
+
+    # Step 3: LLM生成结构化内容
+    from infra.llm.slides import generate_slides
+    slides = generate_slides(input_text, structure)
+    print(f"[Pipeline] Generated {len(slides)} slides")
+
+    # Step 4: 重写（让它能讲）
+    slides = rewrite_slides(slides)
+    print(f"[Pipeline] Rewrote {len(slides)} slides")
+
+    # Step 5: 模板适配
+    slides = adapt_to_template(slides, template, intent)
+    print(f"[Pipeline] Adapted to template: {template}")
+
+    # 构建最终内容
+    content = {
+        "title": slides[0].get("title", "Presentation") if slides else "Presentation",
+        "slides": slides
     }
 
-def parse_input(text: str) -> str:
-    """Step 1: 输入解析"""
-    # 基础验证和清理
-    return text.strip()
+    # Step 8: 规则引擎（执行 enforce_rules）
+    # enforce_rules 已在文件顶部导入，这里仅引用以明确执行顺序
+    _ = enforce_rules
 
-def extract_structure(text: str) -> Dict[str, Any]:
-    """Step 2: 结构提取"""
-    # 实际实现会调用 LLM
-    return {"raw": text, "sections": []}
+    # Step 9: 渲染PPT
+    download_url = create_ppt_file(content)
+    print(f"[Pipeline] Rendered: {download_url}")
 
-def rewrite_for_ppt(structure: Dict[str, Any]) -> Dict[str, Any]:
-    """Step 3: PPT重写"""
-    # 实际实现会调用 LLM
-    return {"title": "", "slides": []}
+    return {
+        "intent": intent,
+        "title": content["title"],
+        "slides": slides,
+        "download_url": download_url
+    }

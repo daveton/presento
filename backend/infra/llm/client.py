@@ -305,11 +305,9 @@ async def generate_ppt_content(input_text: str) -> Dict[str, Any]:
 def _generate_mock_content(input_text: str) -> Dict[str, Any]:
     """
     生成 mock 内容用于测试
-    实际使用时替换为真实 LLM 调用
     """
-    # 简单的内容分析，根据输入长度生成不同页数
     preview = input_text[:100]
-    
+
     return {
         "title": "Video Content Analysis",
         "slides": [
@@ -323,7 +321,7 @@ def _generate_mock_content(input_text: str) -> Dict[str, Any]:
                 "title": "Core Insights",
                 "points": [
                     "Key message extracted",
-                    "Main argument identified", 
+                    "Main argument identified",
                     "Supporting points found"
                 ]
             },
@@ -347,3 +345,6 @@ def _generate_mock_content(input_text: str) -> Dict[str, Any]:
             }
         ]
     }
+
+
+# Note: generate_slides moved to infra.llm.slides module for Pipeline V2
