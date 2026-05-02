@@ -1,7 +1,7 @@
 from typing import Dict, Any, List
 from pptx import Presentation
 from pptx.util import Pt, Inches
-from pptx.dml.color import RgbColor
+from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 import os
 import uuid
@@ -22,9 +22,9 @@ FONT_SIZES = {
 }
 
 # 品牌色
-PRIMARY_COLOR = RgbColor(0x4D, 0x77, 0xFF)  # #4D77FF
-TEXT_COLOR = RgbColor(0x1E, 0x29, 0x3B)     # #1E293B
-SUBTEXT_COLOR = RgbColor(0x47, 0x55, 0x69)  # #475569
+PRIMARY_COLOR = RGBColor(0x4D, 0x77, 0xFF)  # #4D77FF
+TEXT_COLOR = RGBColor(0x1E, 0x29, 0x3B)     # #1E293B
+SUBTEXT_COLOR = RGBColor(0x47, 0x55, 0x69)  # #475569
 
 # ==============================
 # 工具函数
@@ -187,7 +187,7 @@ def _create_cover_slide(prs: Presentation, data: Dict[str, Any]):
         Inches(1), Inches(2), Inches(11.333), Inches(3.5)
     )
     shape.fill.solid()
-    shape.fill.fore_color.rgb = RgbColor(0xF0, 0xF4, 0xFF)  # #F0F4FF
+    shape.fill.fore_color.rgb = RGBColor(0xF0, 0xF4, 0xFF)  # #F0F4FF
     shape.line.fill.background()
     
     # 主标题

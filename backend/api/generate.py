@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, FileResponse
+from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
 from models.schemas import GenerateRequest, GenerateResponse
 from infra.llm.client import generate_ppt_content, is_valid_input
 from core.renderer import create_ppt_file
