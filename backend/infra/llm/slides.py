@@ -12,13 +12,14 @@ def generate_slides(text: str, structure: list) -> list:
     Pipeline V2: 基于结构生成幻灯片内容
     """
     api_key = os.getenv("OPENAI_API_KEY", "")
+    base_url = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
     if not api_key:
         print("[LLM] No API key, using structure-based mock")
         return _generate_slides_from_structure(structure, text)
 
     try:
         import openai
-        client = openai.OpenAI(api_key=api_key)
+        client = openai.OpenAI(api_key=api_key, base_url=base_url)
 
         structure_desc = " → ".join(structure)
         prompt = f"""你是一个专业的PPT内容设计师。

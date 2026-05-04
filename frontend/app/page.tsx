@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://192.168.10.105:8000"
+
 export default function Home() {
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
@@ -17,7 +19,7 @@ export default function Home() {
     setLoading(true)
 
     try {
-      const res = await fetch("http://localhost:8000/api/generate", {
+      const res = await fetch(`${API_BASE}/api/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://192.168.10.105:8000"
+
 interface Slide {
   type: string
   title: string
@@ -34,7 +36,7 @@ export default function ResultPage() {
     // 构建完整下载链接
     const downloadUrl = result.download_url.startsWith("http") 
       ? result.download_url 
-      : `http://localhost:8000${result.download_url}`
+      : `${API_BASE}${result.download_url}`
     
     window.open(downloadUrl, "_blank")
   }

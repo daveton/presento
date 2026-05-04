@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: presento-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ALLOWED_ORIGINS=http://192.168.10.105:5666,http://192.168.10.105:5668,http://localhost:3000,http://localhost:5668
+    volumes:
+      - /tmp/presento:/tmp/presento
+    restart: unless-stopped
+    networks:
+      - presento-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: presento-frontend
+    ports:
+      - "5666:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://192.168.10.105:8000
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - presento-network
+
+networks:
+  presento-network:
+    driver: bridge

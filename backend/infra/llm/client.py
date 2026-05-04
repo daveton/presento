@@ -2,8 +2,9 @@ import os
 import json
 from typing import Dict, Any, List, Tuple
 
-# 设置 OpenAI API 密钥
+# 设置 OpenAI API 密钥和 Base URL
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
 
 # ============================================================
 # 🥇 Step 1: 结构提取 Prompt
@@ -228,7 +229,10 @@ async def generate_ppt_content(input_text: str) -> Dict[str, Any]:
     
     try:
         import openai
-        client = openai.AsyncOpenAI(api_key=OPENAI_API_KEY)
+        client = openai.AsyncOpenAI(
+            api_key=OPENAI_API_KEY,
+            base_url=OPENAI_BASE_URL
+        )
         
         # ============================================================
         # 🥇 Step 1: 结构提取
