@@ -173,7 +173,7 @@ async def create_ppt_file(content: Dict[str, Any]) -> str:
     
     prs.save(filepath)
     
-    return f"/download/{filename}"
+    return f"/api/download/{filename}"
 
 
 def _create_cover_slide(prs: Presentation, data: Dict[str, Any]):
