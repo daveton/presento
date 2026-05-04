@@ -175,6 +175,36 @@
 
 ---
 
+## 2026-05-04
+
+### Fixed
+- 修复 CORS 跨域错误，添加端口 5668 到允许列表
+- 更新 `backend/main.py` 和 `docker-compose.yml` 的 ALLOWED_ORIGINS
+
+### Reason
+- 前端访问 backend 时遇到 "No 'Access-Control-Allow-Origin' header" 错误
+- 前端运行在 port 5668，但 CORS 配置只允许 5666/3000
+
+### Expected
+- 消除跨域错误，前后端正常通信
+- 支持 IP 地址访问（192.168.10.105）
+
+### Result
+- ✅ CORS 错误已解决
+- ✅ 前后端通信正常
+
+### Decision
+- ✅ 保留当前 CORS 配置
+- 支持动态扩展 via ALLOWED_ORIGINS 环境变量
+
+### Impact
+- 影响部署配置，不影响核心代码逻辑
+
+### Docs Updated
+- [x] 08_CHANGELOG.md
+
+---
+
 ## 2026-05-02 (5)
 
 ### Added
