@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://192.168.10.105:8000"
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://192.168.10.105:3301"
 
 export default function Home() {
   const [input, setInput] = useState("")

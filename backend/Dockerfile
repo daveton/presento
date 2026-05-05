@@ -17,6 +17,6 @@ COPY . .
 # Create temp directory for PPT files
 RUN mkdir -p /tmp/presento
 
-EXPOSE 8000
+EXPOSE 3301
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "3301"]

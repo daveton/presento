@@ -7,10 +7,10 @@ services:
       dockerfile: Dockerfile
     container_name: presento-backend
     ports:
-      - "8000:8000"
+      - "3301:3301"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
-      - ALLOWED_ORIGINS=http://192.168.10.105:5666,http://192.168.10.105:5668,http://localhost:3000,http://localhost:5668
+      - ALLOWED_ORIGINS=http://192.168.10.105:3302,http://192.168.10.105:5668,http://localhost:3000,http://localhost:5668
     volumes:
       - /tmp/presento:/tmp/presento
     restart: unless-stopped
@@ -23,9 +23,9 @@ services:
       dockerfile: Dockerfile
     container_name: presento-frontend
     ports:
-      - "5666:3000"
+      - "3302:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://192.168.10.105:8000
+      - NEXT_PUBLIC_API_URL=http://192.168.10.105:3301
       - NODE_ENV=production
     depends_on:
       - backend

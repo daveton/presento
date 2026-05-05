@@ -42,7 +42,7 @@ OPENAI_API_KEY=your_api_key_here
 ### 启动服务
 
 ```bash
-# 后端（端口 8000）
+# 后端（端口 3301）
 cd backend
 python -m uvicorn main:app --reload
 
