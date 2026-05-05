@@ -56,14 +56,14 @@ echo "✓ 文件同步完成"
 
 # 在NAS上构建和启动
 echo "[4/5] 在NAS上构建Docker镜像..."
-ssh ${NAS_USER}@${NAS_HOST} "cd ${NAS_PATH} && docker-compose build"
+ssh ${NAS_USER}@${NAS_HOST} "cd ${NAS_PATH} && docker compose build"
 
 echo "[5/5] 启动服务..."
-ssh ${NAS_USER}@${NAS_HOST} "cd ${NAS_PATH} && docker-compose up -d"
+ssh ${NAS_USER}@${NAS_HOST} "cd ${NAS_PATH} && docker compose up -d"
 
 echo ""
 echo "=== 部署完成 ==="
-echo "前端访问: http://${NAS_HOST}:5666/"
-echo "后端API: http://${NAS_HOST}:8000/"
+echo "前端访问: http://${NAS_HOST}:3302/"
+echo "后端API: http://${NAS_HOST}:3301/"
 echo ""
-echo "查看日志: ssh ${NAS_USER}@${NAS_HOST} 'cd ${NAS_PATH} && docker-compose logs -f'"
+echo "查看日志: ssh ${NAS_USER}@${NAS_HOST} 'cd ${NAS_PATH} && docker compose logs -f'"
